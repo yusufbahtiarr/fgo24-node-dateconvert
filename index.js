@@ -1,26 +1,33 @@
 import moment from "moment";
 import readline from "readline/promises";
 
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
+// external package
 async function mainDate1(){
   try {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
     const input = await rl.question('Masukkan tanggal : ');
     if (moment(input,'DD-MM-YYYY').isValid()) {
       console.log(moment(input,'DD-MM-YYYY').format('DD/MM/YYYY'));
       rl.close();
-    }
-    else { 
-      let err = new Error("false");
+    }else if (!moment(input,'DD-MM-YYYY').isValid()){
+      const err = new Error('format_invalid');
+      rl.close();
+      throw err;
+    } else { 
+      let err = new Error("not_valid");
       rl.close();
       throw err;
     }
   } catch (err) {
-    if(err.message === "false"){
+    if(err.message === "format_invalid"){
       console.log("Format tanggal salah");
+    }
+    if(err.message === "not valid"){
+      console.log("Input tanggal tidak valid ");
     }
   }
 }
