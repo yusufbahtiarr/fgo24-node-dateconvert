@@ -35,18 +35,30 @@ async function mainDate1(){
 mainDate1();
 
 // tanpa external package
-// function mainDate2() {
-//   rl.question('Masukkan tanggal : ', function(input) {
-//     let temp = new Date(input.split('-').reverse().join('-'));
-//     if (temp === 'Invalid Date') {
-//       console.log("Format tanggal salah");
-//       mainDate2();
-//     } else {
-//       let newDate = temp.getDate()+'/'+temp.getMonth()+'/'+temp.getFullYear();
-//       console.log(newDate);
-//       rl.close();
-//     }
-//   });
-// }
-
-// mainDate2();
+async function mainDate2() {
+  try {
+    const inputDate = await  rl.question('Masukkan tanggal : ');
+    if (inputDate === ""){
+      rl.close();
+      throw new Error("kosong");
+    }
+    let container = new Date(inputDate.split('-').reverse().join('-'));
+    if (isNaN(container)) {
+      const error = new Error('false');
+      rl.close();
+      throw error;
+    } else {
+      let joinDate = `${container.getDate()}/${container.getMonth() + 1}/${container.getFullYear()}`
+      console.log(joinDate);
+      rl.close();
+    }
+  } catch (y) {
+    if(y.message === 'false'){
+      console.log('input format tanggal salah');
+    }
+    if(y.message === 'kosong'){
+      console.log('input tidak boleh kosong');
+    }
+  }
+}
+mainDate2();
